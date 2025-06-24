@@ -87,3 +87,22 @@ export async function removeTodoItem(userId, todoId) {
     }
 }
 
+export async function updateAttachmentUrl(userId, todoId, attachmentUrl) {
+    try {
+        logger.info(`Updating attachmentUrl in todo for user: ${userId}`);
+        const params = {
+            TableName: process.env.TODOS_TABLE,
+            Key: { userId, todoId },
+            UpdateExpression: 'set attachmentUrl = :attachmentUrl',
+            ExpressionAttributeValues: {
+                ':attachmentUrl': attachmentUrl
+            }
+        }
+
+        await docClient.send(new UpdateCommand(params))
+    } catch (error) {
+        logger.error(`Failed to update attachmentUrl in todo for user: ${userId}`, { error: error.message });
+        throw error;
+    }
+
+}

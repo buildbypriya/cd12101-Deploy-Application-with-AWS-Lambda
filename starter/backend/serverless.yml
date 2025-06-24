@@ -101,6 +101,11 @@ functions:
           - s3:PutObject
         Resource:
           - arn:aws:s3:::${self:provider.environment.ATTACHMENT_S3_BUCKET}/*
+      - Effect: Allow
+        Action:
+          - dynamodb:UpdateItem
+        Resource:
+          - arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
 
 resources:
   Resources:
@@ -140,3 +145,15 @@ resources:
             - AllowedOrigins: ['*']
               AllowedHeaders: ['*']
               AllowedMethods: [GET, PUT, POST, DELETE, HEAD]
+    BucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket: serverless-todo-dev-priyasingh-12345
+        PolicyDocument:
+          Version: "2012-10-17"
+          Statement:
+            - Sid: PublicReadGetObject
+              Effect: Allow
+              Principal: "*"
+              Action: s3:GetObject
+              Resource: arn:aws:s3:::serverless-todo-dev-priyasingh-12345/*

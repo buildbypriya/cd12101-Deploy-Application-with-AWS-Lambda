@@ -15,3 +15,7 @@ export async function getUploadUrl(userId, todoId) {
   const url = await getSignedUrl(s3, command, { expiresIn: urlExpiration })
   return url
 }
+
+export function getAttachmentUrl(userId, todoId) {
+  return `https://${bucketName}.s3.amazonaws.com/${userId}/${todoId}`
+}
